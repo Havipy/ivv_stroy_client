@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Project } from '../model/types';
+
+/**
+ * Массив проектов для галереи
+ * Каждый проект содержит:
+ * - id: уникальный идентификатор
+ * - title: название проекта
+ * - imageUrl: путь к изображению
+ * - description: описание проекта
+ */
 const projects: Project[] = [
     {
         id: 1,
@@ -22,10 +31,20 @@ const projects: Project[] = [
     },
 ];
 
+/**
+ * Компонент галереи проектов
+ * Реализует слайдер с навигацией и анимацией переходов
+ */
 const ProjectGallery = () => {
+    // Состояние для отслеживания текущего слайда
     const [currentIndex, setCurrentIndex] = useState(0);
+    // Состояние для блокировки переходов во время анимации
     const [isTransitioning, setIsTransitioning] = useState(false);
 
+    /**
+     * Функция для перехода к следующему слайду
+     * Включает защиту от множественных нажатий во время анимации
+     */
     const nextSlide = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
@@ -33,6 +52,10 @@ const ProjectGallery = () => {
         setTimeout(() => setIsTransitioning(false), 500);
     };
 
+    /**
+     * Функция для перехода к предыдущему слайду
+     * Включает защиту от множественных нажатий во время анимации
+     */
     const prevSlide = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
@@ -41,13 +64,17 @@ const ProjectGallery = () => {
     };
 
     return (
+        // Секция галереи с фоном и отступами
         <section className="py-12 bg-gray-50">
             <div className="container mx-auto px-6">
+                {/* Заголовок секции */}
                 <h2 className="text-3xl font-bold text-center mb-8">Наши работы</h2>
 
+                {/* Контейнер слайдера */}
                 <div className="relative max-w-4xl mx-auto">
-                    {/* Main Slider */}
+                    {/* Основной слайдер */}
                     <div className="relative h-[500px] overflow-hidden rounded-lg shadow-xl">
+                        {/* Маппинг проектов в слайды */}
                         {projects.map((project, index) => (
                             <div
                                 key={project.id}
@@ -59,7 +86,9 @@ const ProjectGallery = () => {
                                         : 'opacity-0 translate-x-full'
                                 }`}
                             >
+                                {/* Изображение проекта */}
                                 <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                                {/* Информация о проекте */}
                                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                                     <h3 className="text-white text-2xl font-bold mb-2">{project.title}</h3>
                                     <p className="text-white/90">{project.description}</p>
@@ -68,7 +97,7 @@ const ProjectGallery = () => {
                         ))}
                     </div>
 
-                    {/* Navigation Buttons */}
+                    {/* Кнопки навигации */}
                     <button
                         onClick={prevSlide}
                         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
@@ -84,7 +113,7 @@ const ProjectGallery = () => {
                         <ChevronRight className="w-6 h-6" />
                     </button>
 
-                    {/* Dots Navigation */}
+                    {/* Точечная навигация */}
                     <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex space-x-2">
                         {projects.map((_, index) => (
                             <button

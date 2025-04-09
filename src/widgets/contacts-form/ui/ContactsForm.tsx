@@ -6,7 +6,13 @@ import { ContactFormData } from '../../../types';
 import { AdaptiveCaptcha } from '../../../features/adaptive-captcha';
 import { sendForm } from '../api';
 
+/**
+ * Компонент формы обратной связи
+ * Позволяет пользователям оставить заявку с контактными данными
+ * Включает валидацию полей и защиту от ботов через reCAPTCHA
+ */
 export const ContactsForm = () => {
+    // Инициализация формы с помощью react-hook-form
     const {
         register,
         handleSubmit,
@@ -14,19 +20,29 @@ export const ContactsForm = () => {
         reset,
     } = useForm<ContactFormData>();
 
+    // Ссылка на компонент reCAPTCHA для программного управления
     const recaptchaRef = useRef<ReCAPTCHA>(null);
+    // Состояние верификации reCAPTCHA
     const [isVerified, setIsVerified] = useState(false);
+    // Состояние ошибки reCAPTCHA
     const [recaptchaError, setRecaptchaError] = useState('');
 
+    /**
+     * Обработчик отправки формы
+     * @param data - Данные формы типа ContactFormData
+     */
     const onSubmit = async (data: ContactFormData) => {
+        // Проверка прохождения reCAPTCHA
         if (!isVerified) {
             setRecaptchaError('Пожалуйста, подтвердите, что вы не робот');
             return;
         }
 
         try {
+            // Отправка данных формы на сервер
             await sendForm(data);
             console.log('Form submitted:', data);
+            // Сброс формы и состояния reCAPTCHA после успешной отправки
             reset();
             setIsVerified(false);
             setRecaptchaError('');
@@ -36,6 +52,10 @@ export const ContactsForm = () => {
         }
     };
 
+    /**
+     * Обработчик изменения состояния reCAPTCHA
+     * @param token - Токен верификации от reCAPTCHA
+     */
     const handleRecaptchaChange = (token: string | null) => {
         setIsVerified(!!token);
         if (token) {
@@ -47,6 +67,7 @@ export const ContactsForm = () => {
         <div id="contact-form" className="w-full bg-white p-4 md:p-6 rounded-lg shadow-md scroll-mt-24">
             <h3 className="text-lg md:text-2xl font-bold mb-4 md:mb-6 text-gray-800">Оставьте заявку</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-md mx-auto">
+                {/* Поле для ввода имени */}
                 <div>
                     <input
                         {...register('name', { required: 'Обязательное поле' })}
@@ -55,6 +76,8 @@ export const ContactsForm = () => {
                     />
                     {errors.name && <span className="text-xs md:text-sm text-red-500 mt-1">{errors.name.message}</span>}
                 </div>
+
+                {/* Поле для ввода телефона с валидацией формата */}
                 <div>
                     <input
                         {...register('phone', {
@@ -69,6 +92,8 @@ export const ContactsForm = () => {
                     />
                     {errors.phone && <span className="text-xs md:text-sm text-red-500 mt-1">{errors.phone.message}</span>}
                 </div>
+
+                {/* Поле для ввода комментария */}
                 <div>
                     <textarea
                         {...register('comment')}
@@ -77,6 +102,8 @@ export const ContactsForm = () => {
                         rows={4}
                     />
                 </div>
+
+                {/* Компонент reCAPTCHA и обработка ошибок */}
                 <div className="space-y-2">
                     <div className="flex justify-center -mx-4 md:mx-0">
                         <AdaptiveCaptcha recaptchaRef={recaptchaRef} onChange={handleRecaptchaChange} />
@@ -88,6 +115,7 @@ export const ContactsForm = () => {
                     )}
                 </div>
 
+                {/* Кнопка отправки формы */}
                 <button
                     type="submit"
                     className={`w-full py-2.5 px-4 rounded-md transition-colors duration-200 font-semibold text-sm md:text-base ${
