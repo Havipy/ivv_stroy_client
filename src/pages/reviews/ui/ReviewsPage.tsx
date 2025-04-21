@@ -32,95 +32,6 @@ const Review = ({ name, date, rating, text }: ReviewProps) => {
 };
 
 /**
- * Форма для добавления нового отзыва
- */
-const ReviewForm = () => {
-    const [name, setName] = useState('');
-    const [rating, setRating] = useState(5);
-    const [text, setText] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        // Имитация отправки формы
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setIsSuccess(true);
-            setName('');
-            setRating(5);
-            setText('');
-
-            // Сбросить сообщение об успешной отправке через 3 секунды
-            setTimeout(() => setIsSuccess(false), 3000);
-        }, 1000);
-    };
-
-    return (
-        <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-xl font-bold mb-4">Оставить отзыв</h3>
-
-            {isSuccess && (
-                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                    Спасибо! Ваш отзыв успешно отправлен.
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700 mb-2">
-                        Ваше имя
-                    </label>
-                    <input
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Оценка</label>
-                    <div className="flex">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <button key={star} type="button" onClick={() => setRating(star)} className="focus:outline-none">
-                                <Star className={`w-8 h-8 ${star <= rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="mb-4">
-                    <label htmlFor="text" className="block text-gray-700 mb-2">
-                        Ваш отзыв
-                    </label>
-                    <textarea
-                        id="text"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        rows={4}
-                        required
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors disabled:opacity-50"
-                >
-                    {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
-                </button>
-            </form>
-        </div>
-    );
-};
-
-/**
  * Компонент страницы с отзывами
  */
 export const ReviewsPage = () => {
@@ -220,8 +131,6 @@ export const ReviewsPage = () => {
                             ))}
                         </div>
                     </div>
-
-                    <ReviewForm />
                 </div>
             </div>
         </main>
