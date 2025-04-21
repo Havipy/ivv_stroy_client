@@ -21,7 +21,7 @@ export const Hero = () => {
         <section className="relative py-16 md:py-28">
             {/* Фоновое изображение */}
             <div className="absolute inset-0 z-0">
-                <img src="/public/gallery/4.jpg" alt="Современный интерьер" className="w-full h-full object-cover" />
+                <img src="/gallery/4.jpg" alt="Современный интерьер" className="w-full h-full object-cover" />
                 {/* Затемняющий оверлей */}
                 <div className="absolute inset-0 bg-black opacity-70"></div>
             </div>
