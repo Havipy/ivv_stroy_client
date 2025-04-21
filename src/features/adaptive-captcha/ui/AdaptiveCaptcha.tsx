@@ -12,8 +12,7 @@ interface ReCaptchaProps {
 }
 
 // Ключ сайта для ReCAPTCHA (тестовый ключ)
-const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6Ld82x8rAAAAAB4lZSHpUqgZhdOmnWZLkpwp9P42';
 /**
  * Компонент адаптивной капчи
  * Оборачивает стандартный компонент ReCAPTCHA с дополнительными стилями

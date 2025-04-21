@@ -1,10 +1,10 @@
 // Импорт необходимых компонентов из react-router-dom для маршрутизации
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Импорт страниц приложения
-import { PaymentPage } from './pages/payment';
 import { ContactsPage } from './pages/contacts';
 import { AboutPage } from './pages/about';
 import { HomePage } from './pages/Home';
+import { ReviewsPage } from './pages/reviews';
 // Импорт основного макета приложения
 import { AppLayout } from './app/layouts/AppLayout';
 
@@ -23,8 +23,8 @@ function App() {
                     <Route path="/about" element={<AboutPage />} />
                     {/* Страница контактов */}
                     <Route path="/contacts" element={<ContactsPage />} />
-                    {/* Страница оплаты */}
-                    <Route path="/payment" element={<PaymentPage />} />
+                    {/* Страница отзывов */}
+                    <Route path="/reviews" element={<ReviewsPage />} />
                 </Route>
             </Routes>
         </Router>

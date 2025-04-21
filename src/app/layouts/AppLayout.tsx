@@ -13,55 +13,51 @@ export const AppLayout: FC = () => {
     return (
         <div>
             {/* Шапка сайта с навигацией */}
-            <header className="bg-white shadow-md relative">
+            <header className="bg-gray-900 text-white shadow-md fixed top-0 left-0 right-0 z-50">
                 <nav className="container mx-auto px-4 py-4">
                     <div className="flex justify-between items-center">
                         {/* Логотип компании */}
-                        <Link to="/" className="text-xl md:text-2xl font-bold text-gray-800">
+                        <Link to="/" className="text-xl md:text-2xl font-bold text-white">
                             ИВВ СТРОЙ
                         </Link>
 
                         {/* Кнопка мобильного меню */}
                         <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-                            {isMenuOpen ? <X className="w-6 h-6 text-gray-600" /> : <Menu className="w-6 h-6 text-gray-600" />}
+                            {isMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
                         </button>
 
                         {/* Десктопное меню навигации */}
                         <div className="hidden md:flex space-x-8">
-                            <Link to="/" className="text-gray-600 hover:text-gray-900">
+                            <Link to="/" className="text-white hover:text-blue-400">
                                 Главная
                             </Link>
-                            <Link to="/about" className="text-gray-600 hover:text-gray-900">
+                            <Link to="/about" className="text-white hover:text-blue-400">
                                 О нас
                             </Link>
-                            <Link to="/contacts" className="text-gray-600 hover:text-gray-900">
-                                Контакты
+                            <Link to="/reviews" className="text-white hover:text-blue-400">
+                                Отзывы
                             </Link>
-                            <Link to="/payment" className="text-gray-600 hover:text-gray-900">
-                                Оплата
+                            <Link to="/contacts" className="text-white hover:text-blue-400">
+                                Контакты
                             </Link>
                         </div>
                     </div>
 
                     {/* Мобильное меню навигации */}
                     {isMenuOpen && (
-                        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50">
+                        <div className="md:hidden absolute top-full left-0 right-0 bg-gray-900 shadow-lg z-50">
                             <div className="flex flex-col space-y-4 p-4">
-                                <Link to="/" className="text-gray-600 hover:text-gray-900 py-2" onClick={() => setIsMenuOpen(false)}>
+                                <Link to="/" className="text-white hover:text-blue-400 py-2" onClick={() => setIsMenuOpen(false)}>
                                     Главная
                                 </Link>
-                                <Link to="/about" className="text-gray-600 hover:text-gray-900 py-2" onClick={() => setIsMenuOpen(false)}>
+                                <Link to="/about" className="text-white hover:text-blue-400 py-2" onClick={() => setIsMenuOpen(false)}>
                                     О нас
                                 </Link>
-                                <Link
-                                    to="/contacts"
-                                    className="text-gray-600 hover:text-gray-900 py-2"
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    Контакты
+                                <Link to="/reviews" className="text-white hover:text-blue-400 py-2" onClick={() => setIsMenuOpen(false)}>
+                                    Отзывы
                                 </Link>
-                                <Link to="/payment" className="text-gray-600 hover:text-gray-900 py-2" onClick={() => setIsMenuOpen(false)}>
-                                    Оплата
+                                <Link to="/contacts" className="text-white hover:text-blue-400 py-2" onClick={() => setIsMenuOpen(false)}>
+                                    Контакты
                                 </Link>
                             </div>
                         </div>
@@ -70,7 +66,9 @@ export const AppLayout: FC = () => {
             </header>
 
             {/* Основной контент страницы */}
-            <Outlet />
+            <main className="pt-10 min-h-screen">
+                <Outlet />
+            </main>
 
             {/* Подвал сайта */}
             <footer className="bg-gray-900 text-white">
@@ -79,11 +77,6 @@ export const AppLayout: FC = () => {
                     <div className="max-w-lg mx-auto">
                         <h4 className="text-xl font-bold mb-6 text-center">Контакты</h4>
                         <div className="space-y-4">
-                            {/* Адрес */}
-                            <div className="flex items-center space-x-3">
-                                <MapPin className="w-5 h-5 text-blue-400" />
-                                <span>ул. Строителей, 1, Москва</span>
-                            </div>
                             {/* Телефон */}
                             <div className="flex items-center space-x-3">
                                 <Phone className="w-5 h-5 text-blue-400" />

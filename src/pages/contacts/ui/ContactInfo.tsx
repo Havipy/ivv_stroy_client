@@ -13,15 +13,6 @@ const ContactInfo = () => {
 
             {/* Контейнер для всех контактных блоков с адаптивными отступами */}
             <div className="space-y-4 md:space-y-6">
-                {/* Блок с адресом */}
-                <div className="flex items-start space-x-3">
-                    <MapPin className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                        <h3 className="font-semibold text-sm md:text-base mb-1">Адрес:</h3>
-                        <p className="text-sm text-gray-600">ул. Строителей, 1, Москва</p>
-                    </div>
-                </div>
-
                 {/* Блок с телефоном */}
                 <div className="flex items-start space-x-3">
                     <Phone className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />

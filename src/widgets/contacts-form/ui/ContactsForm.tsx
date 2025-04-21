@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 import { ContactFormData } from '../../../types';
@@ -26,6 +28,8 @@ export const ContactsForm = () => {
     const [isVerified, setIsVerified] = useState(false);
     // Состояние ошибки reCAPTCHA
     const [recaptchaError, setRecaptchaError] = useState('');
+    // Состояние загрузки при отправке формы
+    const [isLoading, setIsLoading] = useState(false);
 
     /**
      * Обработчик отправки формы
@@ -39,8 +43,15 @@ export const ContactsForm = () => {
         }
 
         try {
+            setIsLoading(true);
             // Отправка данных формы на сервер
-            await sendForm(data);
+            const response = await sendForm(data);
+
+            if (!response.ok) {
+                throw new Error('Произошла ошибка при отправке заявки. Пожалуйста, попробуйте позже.');
+            }
+
+            toast.success('Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.');
             console.log('Form submitted:', data);
             // Сброс формы и состояния reCAPTCHA после успешной отправки
             reset();
@@ -49,6 +60,9 @@ export const ContactsForm = () => {
             recaptchaRef.current?.reset();
         } catch (error) {
             console.error('Error submitting form:', error);
+            toast.error('Произошла ошибка при отправке заявки. Пожалуйста, попробуйте позже.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -65,6 +79,17 @@ export const ContactsForm = () => {
 
     return (
         <div id="contact-form" className="w-full bg-white p-4 md:p-6 rounded-lg shadow-md scroll-mt-24">
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
             <h3 className="text-lg md:text-2xl font-bold mb-4 md:mb-6 text-gray-800">Оставьте заявку</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-md mx-auto">
                 {/* Поле для ввода имени */}
@@ -121,9 +146,28 @@ export const ContactsForm = () => {
                     className={`w-full py-2.5 px-4 rounded-md transition-colors duration-200 font-semibold text-sm md:text-base ${
                         isVerified ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     }`}
-                    disabled={!isVerified}
+                    disabled={!isVerified || isLoading}
                 >
-                    Оставить заявку сейчас
+                    {isLoading ? (
+                        <div className="flex items-center justify-center">
+                            <svg
+                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                            </svg>
+                            Отправка...
+                        </div>
+                    ) : (
+                        'Оставить заявку сейчас'
+                    )}
                 </button>
             </form>
         </div>
